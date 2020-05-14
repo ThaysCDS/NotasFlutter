@@ -144,6 +144,7 @@ class _HomeState extends State<Home> {
         title: Text("Minhas anotações"),
         backgroundColor: Colors.amber,
       ),
+
       body: Column(
         children: <Widget>[
           Expanded(
@@ -153,40 +154,50 @@ class _HomeState extends State<Home> {
 
                 final anotacao = _anotacoes[index];
 
-                  return Card(
-                    child: ListTile(
-                      title: Text(anotacao.titulo),
-                      subtitle: Text("${_formartarData(anotacao.data)} - ${anotacao.descricao}"),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
+                  return Dismissible(
+                    background: Container(
+                      color: Colors.red,
+                      padding: EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: (){
-                              _exibirTelaCadastro(anotacao: anotacao);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 16),
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.green,
-                              ),
-                            ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              _removerAnotacao(anotacao.id);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 16),
-                              child: Icon(
-                                Icons.remove_circle,
-                                color: Colors.red,
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
+                    direction: DismissDirection.endToStart,
+                      onDismissed: (direction){
+                        _removerAnotacao(anotacao.id);
+                      },
+
+                      key: Key(anotacao.titulo),
+
+                      child: Card(
+                        child: ListTile(
+                          title: Text(anotacao.titulo),
+                          subtitle: Text("${_formartarData(anotacao.data)} - ${anotacao.descricao}"),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: (){
+                                  _exibirTelaCadastro(anotacao: anotacao);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 16),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
                   );
                 }
             ),
